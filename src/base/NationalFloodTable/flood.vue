@@ -47,7 +47,7 @@
             <td>（万人）</td>
             <td>（亿元）</td>
           </tr>
-          <tr v-for="(item, index) in towns" v-if="item.row_name1">
+          <tr v-for="(item, index) in towns">
             <td>{{item.title}}</td>
             <td v-for="childIndex in 9" style="padding: 5px;">
               <template v-if="isNeedEdit && cloneData[`r${index + 1}col${childIndex}`] !== undefined">

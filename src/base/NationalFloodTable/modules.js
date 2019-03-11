@@ -40,8 +40,8 @@ export const dataMixin = {
     },
     initData () {
       this.cloneData = JSON.parse(JSON.stringify(this.data))
-      console.log(this.data, '这是表格')
-      console.log(this.towns, '这是数据')
+      // console.log(this.data, '这是表格')
+      // console.log(this.towns, '这是数据')
     }
   }
 }

@@ -120,7 +120,8 @@ export default {
     }
   },
   created () {
-    this.dieTitle = getLocalStorage('info').department_name
+    console.log(getLocalStorage('rowreadname'))
+    this.dieTitle = getLocalStorage('rowreadname')[0].department_name
     this.GetdieList()
   },
   mounted () {

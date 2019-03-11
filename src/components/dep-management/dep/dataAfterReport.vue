@@ -198,7 +198,7 @@ export default {
       this.currentDetailData.data.map(item => {
         // console.log(item)
         data[item.cell_id] = item.value
-        data[item.row_name1] = item.row_name1
+        // data[item.row_name1] = item.row_name1
       })
       console.log(data)
 
@@ -341,11 +341,13 @@ export default {
     },
     // 点击详情
     readClick (row) {
+      console.log(row)
       this.actionKey = 'read'
       this.actionsBtn = false
       this.currentDetail = this.tableNames.find(item => item.title === row.title)
       this.currentDetailData = row
       this.dataArr = row.data
+      getLocalStorage('rowreadname', row.data)
       this.isShowDetail = true
     },
     // 点击编辑
