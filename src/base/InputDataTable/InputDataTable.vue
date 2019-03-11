@@ -60,7 +60,7 @@
           <tr>
             <td v-for="item in theadData.level2">{{item.col_name2}}</td>
           </tr>
-          <template v-for="item in tbodyData.level1">
+          <template v-for="item in tbodyData.level1" v-if="isNeedEdit">
             <tr>
               <td
                 :rowspan="item.data.length + 1"
@@ -73,7 +73,25 @@
               <td
                 v-for="child1 in child.data"
                 style="padding: 0 5px;">
-                <Input v-model="child1.value" :disabled="isdisabledshow"></Input>
+                <Input v-model="child1.value"></Input>
+                <!-- <Input v-model="child1.value" :disabled="isdisabledshow"></Input> -->
+              </td>
+            </tr>
+          </template>
+          <template v-for="item in tbodyData.level1" v-else>
+            <tr>
+              <td
+                :rowspan="item.data.length + 1"
+                :style="{
+                  height: `${50 * item.data.length}px`
+                }">{{item.row_name1}}</td>
+            </tr>
+            <tr v-for="child in item.data">
+              <td>{{child.row_name2}}</td>
+              <td
+                v-for="child1 in child.data"
+                style="padding: 0 5px;">
+                {{child1.value}}
               </td>
             </tr>
           </template>
@@ -100,6 +118,10 @@ export default {
     isdisabled: {
       type: Boolean,
       default: true
+    },
+    isNeedEdit: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {

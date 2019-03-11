@@ -339,6 +339,7 @@ export default {
       this.addPoptipShow = false
       this._getDetail()
     },
+    // 点击详情
     readClick (row) {
       this.actionKey = 'read'
       this.actionsBtn = false

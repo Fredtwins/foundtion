@@ -69,6 +69,7 @@
         <InputDataTable
           ref="detail-table"
           :isAdd="actionKey === 'new'"
+          :isNeedEdit="actionKey !== 'details'"
           :data="currentDetailData"
           :isdisabled="disabledShow" />
       </div>
