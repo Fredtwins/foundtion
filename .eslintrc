@@ -1,0 +1,26 @@
+{
+  "extends": "standard",
+  "plugins": [
+    "html"
+  ],
+  "parser": "babel-eslint",
+  "globals": {
+    "ol": true,
+    "Static": true,
+    "ERR_CUSTOM": true,
+    "ERR_OK": true,
+    "options": true,
+    "httpUrl": true,
+    "commonMapHttpUrl": true,
+    "commonWebHttpUrl": true,
+    "dataMapHttpUrl": true,
+    "weatherHttpUrl": true,
+    "webHttpUrl": true
+  },
+  "rules": {
+    "no-new": "off",
+    "camelcase": "off",
+    "no-extend-native": "off",
+    "eqeqeq": "off"
+  }
+}
