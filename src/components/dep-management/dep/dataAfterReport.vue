@@ -156,15 +156,15 @@
 </template>
 
 <script>
-import flood from 'base/NationalFloodTable/flood'
-import forestry from 'base/NationalFloodTable/forestry'
-import industry from 'base/NationalFloodTable/industry'
-import water from 'base/NationalFloodTable/water'
-import die from 'base/NationalFloodTable/die'
-import logging from 'base/NationalFloodTable/logging'
-import material from 'base/NationalFloodTable/material'
-import money from 'base/NationalFloodTable/money'
-import realdata from 'base/NationalFloodTable/realdata'
+import flood from 'base/NationalFloodTabledata/flood'
+import forestry from 'base/NationalFloodTabledata/forestry'
+import industry from 'base/NationalFloodTabledata/industry'
+import water from 'base/NationalFloodTabledata/water'
+import die from 'base/NationalFloodTabledata/die'
+import logging from 'base/NationalFloodTabledata/logging'
+import material from 'base/NationalFloodTabledata/material'
+import money from 'base/NationalFloodTabledata/money'
+import realdata from 'base/NationalFloodTabledata/realdata'
 import { getList, getDetail, changeDetail, getResponseNo, Getaddguoxun, Geteditguoxun } from 'api/data-afterReport'
 import { loadingMixin } from 'common/js/mixins'
 import { dataAfterReportThead } from 'common/js/table'
@@ -198,7 +198,7 @@ export default {
       this.currentDetailData.data.map(item => {
         // console.log(item)
         data[item.cell_id] = item.value
-        // data[item.row_name1] = item.row_name1
+        data.row_name1 = item.row_name1
       })
       console.log(data)
 
@@ -330,11 +330,11 @@ export default {
         this.dieShow = false
         this.actionsBtn = false
       }
-      if (this.actionKey === 'new') {
-        this.actionKey = 'read'
-      } else {
-        this.actionKey = 'new'
-      }
+      // if (this.actionKey === 'new') {
+      //   this.actionKey = 'read'
+      // } else {
+      //   this.actionKey = 'new'
+      // }
       this.currentDetail = item
       this.addPoptipShow = false
       this._getDetail()
