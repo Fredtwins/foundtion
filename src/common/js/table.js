@@ -6046,7 +6046,7 @@ export function rptlogThead (that) {
     align: 'center'
   }, {
     title: '启动时间',
-    key: 'createdt',
+    key: 'response_createdt',
     align: 'center'
   }, {
     title: '日志时间',
