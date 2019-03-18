@@ -67,6 +67,8 @@ export default {
   methods: {
     changeActive (name) {
       // this.getRole()
+      console.log(name)
+      getLocalStorage('cebian', name)
       getLocalStorage('index', 1)
       this.SET_STATUS(false)
       if (getLocalStorage('searchValue')) {

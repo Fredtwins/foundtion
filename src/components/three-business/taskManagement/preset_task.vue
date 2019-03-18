@@ -443,6 +443,15 @@ export default {
           plan_no: getLocalStorage('plannoadd')
         }
       },
+      postObjs: {
+        'page': 1,
+        'pageSize': 10,
+        'order': { _id: -1 },
+        'searchValue': {
+          department_code: likeStrSearch(getUserIng().department_code),
+          department_level: getUserIng().department_level
+        }
+      },
       department_code: '',
       plan_type: '',
       baseInfo: {},
@@ -615,13 +624,29 @@ export default {
         }
       })
     },
-    getList () {
+    getList (searchtemp) {
       this.loading = true
       this.dataList = []
       // let department_name = getLocalStorage('info').department_name
       // let department_code = getLocalStorage('info').department_code
       // let department_level = getLocalStorage('info').department_level
-      getpresetTaskList(this.postObj).then(res => {
+      let postObjs = {
+        'page': 1,
+        'pageSize': 10,
+        'order': { _id: -1 },
+        'searchValue': {
+          department_code: likeStrSearch(getUserIng().department_code),
+          department_level: getUserIng().department_level,
+          ...searchtemp
+        }
+      }
+      let search = {}
+      if (getLocalStorage('cebian') === '3-2') {
+        search = postObjs
+      } else {
+        search = this.postObj
+      }
+      getpresetTaskList(search).then(res => {
         this.loading = false
         if (res) {
           if (res.code === '0000') {
@@ -714,12 +739,16 @@ export default {
           delete this.postObj.searchValue.department_level
         } else {
           this.postObj.searchValue = {
-            department_code: likeStrSearch(getUserIng().department_code),
-            department_level: getUserIng().department_level,
-            ...this.postObj.searchValue
+            // department_code: likeStrSearch(getUserIng().department_code),
+            // department_level: getUserIng().department_level,
+            // ...this.postObj.searchValue
+            department_name: this.searchVal.department_fullname,
+            task_type: this.searchVal.task_type,
+            plan_type: this.searchVal.plan_type
           }
         }
-        this.getList()
+        console.log(this.postObj.searchValue)
+        this.getList(this.postObj.searchValue)
       } else {
         this.getType(this.searchVal)
       }

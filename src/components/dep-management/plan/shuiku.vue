@@ -226,6 +226,7 @@ export default {
         search.town = likeStrSearch(this.formInline.town)
       }
       this.getuserList(page, search)
+      console.log(search)
     },
     // 列表
     _getuserList () {

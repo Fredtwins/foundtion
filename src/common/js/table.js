@@ -1786,11 +1786,11 @@ export function shuikuThead (that) {
   }, {
     title: '镇(街)',
     align: 'center',
-    key: 'town'
+    key: 'governor'
   }, {
     title: '主管部门',
     align: 'center',
-    key: 'governor'
+    key: 'town'
   }, {
     title: '地址',
     align: 'center',

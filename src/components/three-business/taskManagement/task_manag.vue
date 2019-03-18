@@ -601,6 +601,15 @@ export default {
           plan_no: getLocalStorage('plannoadd')
         }
       },
+      postObjs: {
+        'page': 1,
+        'pageSize': 10,
+        'order': { status: -1, _id: -1 },
+        'searchValue': {
+          department_code: likeStrSearch(getUserIng().department_code),
+          department_level: getUserIng().department_level
+        }
+      },
       formArr: [],
       code: '',
       taskForm: {
@@ -842,7 +851,7 @@ export default {
       // let department_name = getLocalStorage('info').department_name
       // let department_code = getLocalStorage('info').department_code
       // let department_level = getLocalStorage('info').department_level
-      getTaskCryList(this.postObj).then(res => {
+      getTaskCryList(this.postObjs).then(res => {
         this.loading = false
         if (res) {
           if (res.code === '0000') {

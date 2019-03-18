@@ -15,6 +15,21 @@ export function getpresetTaskList (obj) {
   }
   return ajaxPost(url, data, options())
 }
+// 列表
+export function getpresetTaskListtemp (page = 1, search = {}) {
+  let url = 'sf_task_preplan/listForDept'
+
+  let data = {
+    page: page,
+    pageSize: 10,
+    searchValue: {
+      ...search
+    },
+    order: {_id: -1}
+  }
+
+  return ajaxPost(url, data, options())
+}
 // 增加
 export function addpresetTask (obj) {
   let url = 'sf_task_preplan/new'
