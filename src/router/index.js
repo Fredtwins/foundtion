@@ -1240,7 +1240,7 @@ const router = new Router({
       {
         path: '/home/moveManagement',
         component: MoveManagement,
-        redirect: '/home/moveManagement/alerts-management',
+        redirect: '/home/moveManagement/patrol-plan',
         children: [{
           path: '/home/moveManagement/alerts-management',
           component: AlertsMag

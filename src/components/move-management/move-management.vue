@@ -64,7 +64,7 @@ export default {
   },
   created () {
     if (!getAction().third) {
-      this.acName = '1'
+      this.acName = '2-1'
     } else {
       this.acName = getAction().third
     }
