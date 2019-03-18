@@ -316,6 +316,7 @@ export default {
           if (res.code === '0000') {
             getLocalStorage('id', res.result._id)
             getLocalStorage('plannoadd', res.result.plan_no)
+            getLocalStorage('plannameage', res.result.plan_name)
             this.$router.push('/home/threeBusiness/er_plan/organization')
           } else if (res.code === '0001') {
             this.sure_save = false

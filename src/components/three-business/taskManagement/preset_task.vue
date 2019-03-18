@@ -439,7 +439,7 @@ export default {
         'searchValue': {
           department_code: likeStrSearch(getUserIng().department_code),
           department_level: getUserIng().department_level,
-          plan_name: getLocalStorage('planName'),
+          plan_name: getLocalStorage('plannameage'),
           plan_no: getLocalStorage('plannoadd')
         }
       },
@@ -519,7 +519,7 @@ export default {
         'searchValue': {
           'department_code': this.department_code,
           'plan_type': this.plan_type,
-          'plan_name': getLocalStorage('planName'),
+          'plan_name': getLocalStorage('plannameage'),
           'plan_no': getLocalStorage('plannoadd'),
           ...pObj
         }

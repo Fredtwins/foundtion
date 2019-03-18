@@ -197,13 +197,13 @@ export default {
         this.postObj.searchValue = {
           department_code: this.department_code,
           plan_type: this.plan_type,
-          plan_name: getLocalStorage('planName'),
+          plan_name: getLocalStorage('plannameage'),
           plan_no: getLocalStorage('plannoadd')
         }
       } else {
         this.postObj.searchValue = {
           plan_type: this.plan_type,
-          plan_name: getLocalStorage('planName'),
+          plan_name: getLocalStorage('plannameage'),
           plan_no: getLocalStorage('plannoadd')
         }
       }
