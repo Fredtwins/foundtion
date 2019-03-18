@@ -287,6 +287,7 @@ export default {
       setAction(obj)
       getLocalStorage('id', dataObj._id)
       getLocalStorage('planName', dataObj.plan_name)
+      getLocalStorage('plannoadd', dataObj.plan_no)
       senActive(0)
       this.$router.push('/home/threeBusiness/er_plan/general')
       // this.$router.push('/home/threeBusiness/erp_default')

@@ -439,7 +439,8 @@ export default {
         'searchValue': {
           department_code: likeStrSearch(getUserIng().department_code),
           department_level: getUserIng().department_level,
-          plan_name: getLocalStorage('planName')
+          plan_name: getLocalStorage('planName'),
+          plan_no: getLocalStorage('plannoadd')
         }
       },
       department_code: '',
@@ -519,6 +520,7 @@ export default {
           'department_code': this.department_code,
           'plan_type': this.plan_type,
           'plan_name': getLocalStorage('planName'),
+          'plan_no': getLocalStorage('plannoadd'),
           ...pObj
         }
       }
@@ -657,6 +659,10 @@ export default {
           delete this.formItem['value']
           if (this.moduleTitle === '新增') {
             // this.formItem = Object.assign(this.formItem,this.baseInfo)
+            // this.formItem = {
+            //   plan_no: getLocalStorage('planNo')
+            // }
+            this.formItem['plan_no'] = getLocalStorage('planNo')
             addpresetTask(this.formItem).then(res => {
               if (res.code === '0000') {
                 this.disabled = false

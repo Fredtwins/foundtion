@@ -53,11 +53,6 @@ export function erManagementQuery () {
         label: '启动'
       },
       {
-        value: '调整',
-        key: '调整',
-        label: '调整'
-      },
-      {
         value: '关闭',
         key: '关闭',
         label: '关闭'

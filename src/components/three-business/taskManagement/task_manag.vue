@@ -597,7 +597,8 @@ export default {
         'order': { status: -1, _id: -1 },
         'searchValue': {
           department_code: likeStrSearch(getUserIng().department_code),
-          department_level: getUserIng().department_level
+          department_level: getUserIng().department_level,
+          plan_no: getLocalStorage('plannoadd')
         }
       },
       formArr: [],
@@ -964,6 +965,7 @@ export default {
     // 点击搜索按钮
     search () {
       this.searchVal.department_code = this.code
+      this.searchVal.plan_no = getLocalStorage('plannoadd')
       for (var i in this.searchVal) {
         if (!this.searchVal[i]) {
           delete this.searchVal[i]
@@ -976,7 +978,8 @@ export default {
         this.postObj.searchValue = {
           ...this.postObj.searchValue,
           department_code: likeStrSearch(getUserIng().department_code),
-          department_level: getUserIng().department_level
+          department_level: getUserIng().department_level,
+          plan_no: getLocalStorage('plannoadd')
         }
       }
       delete this.postObj.searchValue.department_fullname

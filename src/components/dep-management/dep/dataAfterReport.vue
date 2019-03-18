@@ -188,7 +188,7 @@ export default {
   },
   computed: {
     currentDetailValue () {
-      console.log(this.currentDetailData.data)
+      // console.log(this.currentDetailData.data)
       if (!this.currentDetailData.data) {
         return {}
       }
@@ -198,9 +198,8 @@ export default {
       this.currentDetailData.data.map(item => {
         // console.log(item)
         data[item.cell_id] = item.value
-        data.row_name1 = item.row_name1
+        // data.row_name1 = item.row_name1
       })
-      console.log(data)
 
       return data
     }
@@ -208,6 +207,7 @@ export default {
   created () {
     this._getList()
     this._getResponseNo()
+    this._getDetail()
   },
   data () {
     return {
@@ -274,7 +274,7 @@ export default {
         _id: this.currentDetailData._id
       }
       Geteditguoxun(editsearch).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.code === '0000') {
           successMessage(res.message)
           this.isShowDetail = false
@@ -290,9 +290,12 @@ export default {
 
       const cloneData = JSON.parse(JSON.stringify(this.currentDetailData.data))
       const value = this.$refs['detail'].getData()
-
+      // 打印保存后的value
       cloneData.map(item => {
+        console.log(item)
+        console.log('---------')
         item.value = value[item.cell_id]
+        // item.row_name1 = value.row_name1
       })
 
       const data = JSON.parse(JSON.stringify(this.currentDetailData))
@@ -319,9 +322,11 @@ export default {
     },
     addshowClick () {
       this.isShowDetail = true
+      this.actionKey = 'new'
     },
     // 选择下拉框
     addClick (item) {
+      // console.log(this.actionKey)
       if (item.key === 'die' || item.title === '死亡人员基本情况统计表') {
         this.actionKey = 'new'
         this.dieShow = true
@@ -330,6 +335,7 @@ export default {
         this.dieShow = false
         this.actionsBtn = false
       }
+      // console.log(this.actionKey)
       // if (this.actionKey === 'new') {
       //   this.actionKey = 'read'
       // } else {
@@ -341,7 +347,7 @@ export default {
     },
     // 点击详情
     readClick (row) {
-      console.log(row)
+      // console.log(row)
       this.actionKey = 'read'
       this.actionsBtn = false
       this.currentDetail = this.tableNames.find(item => item.title === row.title)
@@ -409,6 +415,7 @@ export default {
 
       if (res && res.code === ERR_OK) {
         this.currentDetailData.data = res.result
+        console.log(this.currentDetailData.data)
       }
     },
     async _getList () {

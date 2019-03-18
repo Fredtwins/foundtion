@@ -197,15 +197,18 @@ export default {
         this.postObj.searchValue = {
           department_code: this.department_code,
           plan_type: this.plan_type,
-          plan_name: getLocalStorage('planName')
+          plan_name: getLocalStorage('planName'),
+          plan_no: getLocalStorage('plannoadd')
         }
       } else {
         this.postObj.searchValue = {
           plan_type: this.plan_type,
-          plan_name: getLocalStorage('planName')
+          plan_name: getLocalStorage('planName'),
+          plan_no: getLocalStorage('plannoadd')
         }
       }
       getpresetTaskList(this.postObj).then(res => {
+        console.log(this.postObj)
         this.loading = false
         if (res.code === '0000') {
           this.tableTbody = res.result.result

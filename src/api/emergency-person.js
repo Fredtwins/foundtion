@@ -10,7 +10,7 @@ export function getList (page = 1, search = {}) {
     searchValue: {
       ...search
     },
-    order: { YYYYMM: -1 }
+    order: { createdt: -1 }
   }
 
   return ajaxPost(url, data, options())

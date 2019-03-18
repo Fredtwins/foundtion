@@ -159,14 +159,14 @@ export default {
         password: this.info.password
       }
       goLogin(search).then(res => {
-        if (res) {
-          var regex = /^[A-Za-z0-9]{8,20}$/
-          if (!regex.test(search.password)) {
-            this.$Message.error('密码过于简单，建议修改为不少于8位的数字加字母组合')
-          }
+        if (res.code) {
           removeAction()
           this.showLoading = false
           if (res.code === '0000') {
+            var regex = /^[A-Za-z0-9]{8,20}$/
+            if (!regex.test(search.password)) {
+              this.$Message.error('密码过于简单，建议修改为不少于8位的数字加字母组合')
+            }
             this.$Loading.finish()
             if (res.result.system_name !== '南海区三防综合业务管理系统') {
               this.$Message.error('非管理员没有权限进入该系统')

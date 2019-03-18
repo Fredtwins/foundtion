@@ -36,15 +36,15 @@ export const dataMixin = {
   },
   methods: {
     getData () {
+      console.log(this.cloneData)
       return JSON.parse(JSON.stringify(this.cloneData))
     },
     initData () {
       this.cloneData = JSON.parse(JSON.stringify(this.data))
-      console.log(this.data, '这是表格')
       // console.log(this.towns, '这是数据')
-      this.towns = this.towns.filter(item => {
-        return this.data.row_name1 == item.title
-      })
+      // this.towns = this.towns.filter(item => {
+      //   return this.data.row_name1 == item.title
+      // })
     }
   }
 }

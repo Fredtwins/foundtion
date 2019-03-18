@@ -50,7 +50,7 @@
           <template v-if="dataResult.length">
             <tr v-for="item in dataResult">
               <td>{{item.town}}</td>
-              <td v-for="childIndex in 21">{{item[`col${childIndex}`]}}</td>
+              <td v-for="childIndex in 22">{{item[`col${childIndex}`]}}</td>
             </tr>
           </template>
           <template v-else-if="dataResult.length === 0">

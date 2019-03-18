@@ -105,7 +105,7 @@ export default {
       }
       updateDep(pObj).then(res => {
         if (res.code === '0000') {
-          if (this.datalink === '专题预案') {
+          if (this.datalink === '专题预案' || this.datalink === '社区预案') {
             this.$router.push('/home/threeBusiness/er_plan/transfer')
           } else {
             this.$router.push('/home/threeBusiness/er_plan/aftermath')

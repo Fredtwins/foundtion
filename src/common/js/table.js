@@ -728,7 +728,7 @@ export function erManagementThead (that) {
     align: 'center',
     ellipsis: true
   }, {
-    title: '调整时间',
+    title: '最后调整时间',
     key: 'modifydt',
     align: 'center',
     ellipsis: true
@@ -783,6 +783,10 @@ export function codethead (that) {
   }, {
     title: '状态',
     key: 'status',
+    align: 'center'
+  }, {
+    title: '调整时间',
+    key: 'createdt',
     align: 'center'
   }]
 }
@@ -6042,6 +6046,10 @@ export function rptlogThead (that) {
     align: 'center'
   }, {
     title: '启动时间',
+    key: 'createdt',
+    align: 'center'
+  }, {
+    title: '日志时间',
     key: 'createdt',
     align: 'center'
   }, {

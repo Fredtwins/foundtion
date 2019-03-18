@@ -57,6 +57,7 @@
           <tr v-for="(item, index) in towns">
             <td>{{item.title}}</td>
             <td v-for="childIndex in 18" style="padding: 5px;">
+              <!-- <template v-if="isNeedEdit"> -->
               <template v-if="isNeedEdit && cloneData[`r${index + 1}col${childIndex}`] !== undefined">
                 <Input v-model="cloneData[`r${index + 1}col${childIndex}`]" />
               </template>

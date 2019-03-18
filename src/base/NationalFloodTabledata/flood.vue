@@ -23,7 +23,7 @@
       <table border>
         <tbody>
           <tr>
-            <td rowspan="3" style="width:80px;">地区</td>
+            <td rowspan="3" style="width:80px;">地区s</td>
             <td colspan="2" style="width:160px;">受灾范围</td>
             <td rowspan="2" style="width:80px;">受灾人口</td>
             <td rowspan="2" style="width:80px;">受淹城市</td>
@@ -50,6 +50,7 @@
           <tr v-for="(item, index) in towns">
             <td>{{item.title}}</td>
             <td v-for="childIndex in 9" style="padding: 5px;">
+              <!-- <template v-if="isNeedEdit"> -->
               <template v-if="isNeedEdit && cloneData[`r${index + 1}col${childIndex}`] !== undefined">
                 <Input v-model="cloneData[`r${index + 1}col${childIndex}`]" />
               </template>

@@ -115,10 +115,10 @@
     </Modal>
     <!--确认调整 -->
     <Modal v-model="sure_edit" width="360">
-      <p slot="header" style="color:red;text-align:center">
+      <!-- <p slot="header" style="color:red;text-align:center">
         <Icon type="information-circled"></Icon>
         <span>调整</span>
-      </p>
+      </p> -->
       <div style="text-align:center">
         <span>级别</span>
         <Select
@@ -205,7 +205,7 @@ export default {
     },
     sureEdit () {
       this.formItem.closedt = initTime()
-      this.formItem.status = '调整'
+      // this.formItem.status = '调整'
       updateErm(this.formItem).then(res => {
         this.sure_edit = false
         if (res.code === '0000') {
@@ -251,6 +251,7 @@ export default {
       this.DataTable = dataObj.response_history
     },
     eidt (dataObj) {
+      console.log(dataObj)
       this.formItem = dataObj
       this.sure_edit = true
     },

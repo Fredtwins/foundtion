@@ -122,7 +122,7 @@
           <template v-if="dataResult.length">
             <tr v-for="item in dataResult">
               <td>{{item.town}}</td>
-              <td v-for="childIndex in 48">{{item[`col${childIndex}`]}}</td>
+              <td v-for="childIndex in 49">{{item[`col${childIndex}`]}}</td>
             </tr>
           </template>
           <template v-else-if="dataResult.length === 0">
@@ -185,6 +185,7 @@ export default {
       this.loading = false
 
       if (res.code === ERR_OK) {
+        this.dataResult = res.result.result
         this.total = res.result.totalSize
         this.current = res.result.page
       }

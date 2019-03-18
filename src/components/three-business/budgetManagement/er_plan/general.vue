@@ -312,8 +312,10 @@ export default {
         this.formItem.plan_year = year.getFullYear()
         this.formItem.createdt = initTime()
         addDep(this.formItem).then(res => {
+          console.log(this.formItem)
           if (res.code === '0000') {
             getLocalStorage('id', res.result._id)
+            getLocalStorage('plannoadd', res.result.plan_no)
             this.$router.push('/home/threeBusiness/er_plan/organization')
           } else if (res.code === '0001') {
             this.sure_save = false

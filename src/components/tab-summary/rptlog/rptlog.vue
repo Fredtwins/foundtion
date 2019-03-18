@@ -10,11 +10,31 @@
     </div>
     <div v-show="!isShowDetail && !isShowDepartDetail && !isShowdearclick && !isShowrainlist && !isShowfooldlist && !isShowaddDetail && !isShowfangyulist" class="list">
       <Form ref="formInline" :model="formInline" inline :label-width="60" id="mar">
-        <Form-item label="月份" prop="startTime">
+        <!-- <Form-item label="月份" prop="startTime">
           <DatePicker
             v-model="formInline.YYYYMM"
             type="month"
             placeholder="月份"
+            style="width:2rem"></DatePicker>
+        </Form-item> -->
+
+        <Form-item label="统计时间" prop="startTime">
+          <DatePicker
+            v-model="formInline.startTime"
+            type="date"
+            placeholder="开始时间"
+            @on-change="starttimechange"
+            style="width:2rem"></DatePicker>
+        </Form-item>
+        <Form-item
+          label="～"
+          :label-width="30"
+          prop="endTime">
+          <DatePicker
+            v-model="formInline.endTime"
+            type="date"
+            placeholder="结束时间"
+            @on-change="endtimechange"
             style="width:2rem"></DatePicker>
         </Form-item>
         <div class="searchBtn">
@@ -106,10 +126,10 @@ import zhuanYi from './zhuanyi'
 import fangYu from './fangyu'
 import { getList, geteditLists } from 'api/rptlog'
 import { loadingMixin } from 'common/js/mixins'
-import { yyyyMMFormat } from 'common/js/config'
+// import { yyyyMMFormat } from 'common/js/config'
 import { rptlogThead } from 'common/js/table'
 // import { errorMessage } from 'common/js/dom'
-import { timeFilter, cloneObj } from 'common/js/util'
+import { cloneObj } from 'common/js/util'
 import { getLocalStorage } from 'common/js/dom'
 
 export default {
@@ -129,7 +149,9 @@ export default {
     return {
       formInline: {
         YYYYMM: '',
-        title: ''
+        title: '',
+        startTime: '',
+        endTime: ''
       },
       formItem: {},
       ruleValidate: {},
@@ -148,12 +170,6 @@ export default {
       measureObj: [],
       addPageShow: false,
       measureArr: [],
-      formid: '',
-      formid2: '',
-      formid3: '',
-      formid4: '',
-      formid5: '',
-      formid6: '',
       deitform: ''
     }
   },
@@ -161,41 +177,39 @@ export default {
     backDetailClick () {
       this.isShowDetail = false
       this.isShowaddDetail = false
-      console.log('触发了')
-      console.log(this.isShowaddDetail)
       this.isShowDepartDetail = false
       this.isShowrainlist = false
       this.isShowdearclick = false
       this.isShowfooldlist = false
       this.isShowfangyulist = false
     },
-    submitSearch () {
-      this._getList()
+    submitSearch (page) {
+      const search = {}
+      if (this.formInline.startTime || this.formInline.endTime) {
+        search.createdt = `${this.formInline.startTime}|#|${this.formInline.endTime}`
+      }
+
+      this._getList(page, search)
     },
     changePage (page) {
       this.current = page
-      this._getList()
+      this._getList(page)
     },
     detailClick (data) {
+      this.deitform = data._id
       if (data.title === '应急措施统计表') {
         this.addPageShow = true
         this.isShowaddDetail = true
-        this.deitform = this.formid
       } else if (data.title === '佛山市南海区救灾复产情况统计表') {
         this.isShowDepartDetail = true
-        this.deitform = this.formid2
       } else if (data.title === '受灾情况统计表') {
         this.isShowdearclick = true
-        this.deitform = this.formid3
       } else if (data.title === '暴雨台风防御工作开展情况统计表') {
         this.isShowrainlist = true
-        this.deitform = this.formid4
       } else if (data.title === '佛山市南海区防汛防台风已转移人员统计表') {
         this.isShowfooldlist = true
-        this.deitform = this.formid5
       } else if (data.title === '佛山市南海区防御当前台风应急措施统计表') {
         this.isShowfangyulist = true
-        this.deitform = this.formid6
       }
 
       let searchedit = {
@@ -232,31 +246,32 @@ export default {
         }
       })
     },
-    async _getList () {
+    // async _getList () {
+    //   this.loading = true
+
+    //   const search = {}
+
+    //   search.createdt = `${this.formInline.startTime}|#|${this.formInline.endTime}`
+
+    //   const res = await getList(this.current, search)
+    //   this.loading = false
+
+    //   if (res && res.code === ERR_OK) {
+    //     this.tbody = res.result.result
+    //     this.total = res.result.totalSize
+    //     this.current = res.result.page
+    //   }
+    // },
+    _getList (page, search) {
       this.loading = true
-
-      const search = {}
-      const { YYYYMM } = this.formInline
-
-      if (YYYYMM) {
-        search.YYYYMM = timeFilter(new Date(YYYYMM), yyyyMMFormat)
-      }
-
-      const res = await getList(this.current, search)
-      this.loading = false
-
-      if (res && res.code === ERR_OK) {
-        console.log(res)
-        this.formid = res.result.result[0]._id
-        this.formid2 = res.result.result[1]._id
-        this.formid3 = res.result.result[2]._id
-        this.formid4 = res.result.result[3]._id
-        this.formid5 = res.result.result[4]._id
-        this.formid6 = res.result.result[5]._id
-        this.tbody = res.result.result
-        this.total = res.result.totalSize
-        this.current = res.result.page
-      }
+      getList(page, search).then(res => {
+        this.loading = false
+        if (res && res.code === ERR_OK) {
+          this.tbody = res.result.result
+          this.total = res.result.totalSize
+          this.current = res.result.page
+        }
+      })
     },
     // 应急响应措施表 ->
     goBack () {
@@ -265,6 +280,14 @@ export default {
     cancel () {
       this.addPageShow = false
       this.isShowaddDetail = false
+    },
+    starttimechange (time) {
+      // console.log(time)
+      this.formInline.startTime = time
+    },
+    endtimechange (time) {
+      this.formInline.endTime = time
+      console.log(this.formInline.endTime)
     }
   }
 }
