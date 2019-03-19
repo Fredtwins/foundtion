@@ -735,6 +735,11 @@ export default {
       if (this.showTitle) {
         this.postObj.searchValue = this.searchVal
         if (this.postObj.searchValue.department_fullname) {
+          this.postObj.searchValue = {
+            department_name: this.searchVal.department_fullname,
+            task_type: this.searchVal.task_type,
+            plan_type: this.searchVal.plan_type
+          }
           delete this.postObj.searchValue.department_code
           delete this.postObj.searchValue.department_level
         } else {
@@ -747,7 +752,6 @@ export default {
             plan_type: this.searchVal.plan_type
           }
         }
-        console.log(this.postObj.searchValue)
         this.getList(this.postObj.searchValue)
       } else {
         this.getType(this.searchVal)
@@ -819,13 +823,33 @@ export default {
     // 分页
     pageChange (index) {
       if (this.showTitle) {
-        this.postObj.page = index
-        this.getList()
-        // this.tableTbody = divisionArr(this.dataList)[index - 1]
+        this.postObjs.page = index
+        this.getListtemp(this.postObjs)
       } else {
         this.postObj.page = index
         this.getType({}, index)
       }
+    },
+    getListtemp (searchtemp) {
+      this.loading = true
+      this.dataList = []
+      let search = {}
+      if (getLocalStorage('cebian') === '3-2') {
+        search = searchtemp
+      } else {
+        search = this.postObj
+      }
+      getpresetTaskList(search).then(res => {
+        this.loading = false
+        if (res) {
+          if (res.code === '0000') {
+            this.tableTbody = res.result.result
+            this.total = res.result.totalSize
+          }
+        } else {
+          errorNotice('服务器未连接，')
+        }
+      })
     }
   }
 }
