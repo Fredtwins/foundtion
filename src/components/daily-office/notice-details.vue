@@ -1,6 +1,6 @@
 <template>
   <div class="notice-details">
-    <div class="title">
+    <!-- <div class="title">
       <h1 class="hdatatitle">{{dataObj.title}}</h1>
       <br>
     </div>
@@ -20,7 +20,34 @@
         </p>
       </div>
     </div>
-    <br>
+    <br> -->
+    <div class="content">
+      <div class="bodybg">
+        <div class="bodycontent">
+          <div class="title">
+            <h1 class="hdatatitle">{{dataObj.title}}</h1>
+            <br>
+          </div>
+          <div class="centercontentdata">
+            <div class="sub-info">
+              <span>{{dataObj.createby}}</span>
+              <span class="time">{{dataObj.createdt}}</span>
+            </div>
+            <div class="attach">
+              <span>附件：</span>
+              <span @click="downLoad" class="link">{{dataObj.attachment_name || '暂无'}}</span>
+            </div>
+            <br>
+            <div class="contenttext">
+              <p>{{dataObj.notice_desc}}</p>
+              <p v-for="(item,index) in dataObj.picture" :key="index" class="imgdatatext">
+                <img :src="imgDefaultUrl + item.path" alt>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="loading" v-if="loadingShow">
       <command-loading></command-loading>
     </div>
@@ -72,43 +99,52 @@ export default {
   .notice-details {
     height: 100%;
     overflow: auto;
-    > .title {
-      > .hdatatitle {
-        padding-top: 45px;
-      }
-    }
-    div {
-      text-align: center;
-      font-size: 14px;
-      img {
-        display: inline-block;
-        width: 50%;
-      }
-      p:first-child {
-        margin: 0 auto;
-        width: 60%;
-        text-align: left;
-        text-indent: 2em;
-        font-size: 18px;
-      }
-    }
-    > .centercontentdata {
-      width: 100%;
-      height: 50px;
-      display: inline;
-      .sub-info {
-        .time {
-          color: #999;
-          padding-left: 15px;
+    > .content {
+      width: 976px;
+      margin: 0 auto;
+      height: 100%;
+      > .bodybg {
+        padding-top: 30px;
+        border-bottom: 1px solid #cdcdcd;
+        > .bodycontent {
+          width: 840px;
+          margin: 0 auto;
+          min-height: 524px;
+          height: auto;
+          padding: 20px 30px;
+          background-color: #fff;
+          box-shadow: 0px 0px 1px 2px;
+          margin-bottom: 5px;
+          > .title {
+            text-align: center;
+            > .hdatatitle {
+              color: #3355a2;
+            }
+          }
+          > .centercontentdata {
+            > .sub-info {
+              text-align: center;
+              font-size: 14px;
+            }
+            > .attach {
+              text-align: center;
+              font-size: 14px;
+            }
+            > .contenttext {
+              > p {
+                font-size: 18px;
+              }
+              > .imgdatatext{
+                text-align: center;
+                > img {
+                  width: 500px;
+                  height: 300px;
+                  margin-bottom: 5px;
+                }
+              }
+            }
+          }
         }
-      }
-      .link{
-        color: blue;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-      .link:hover{
-        color: red;
       }
     }
   }

@@ -284,6 +284,9 @@ export default {
         this.$router.push('/home/threeBusiness/threeBusinessTopic')
         this.formItem.plan_category = '专题预案'
       }
+      if (getLocalStorage('cebian') === '1-4') {
+        this.$router.push('/home/threeBusiness/threeBusinessApproval')
+      }
     },
     _getPlanList () {
       getdepList(this.postObj).then(res => {

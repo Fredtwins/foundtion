@@ -687,7 +687,7 @@ export default {
             // this.formItem = {
             //   plan_no: getLocalStorage('planNo')
             // }
-            this.formItem['plan_no'] = getLocalStorage('planNo')
+            this.formItem['plan_no'] = getLocalStorage('plannoadd')
             addpresetTask(this.formItem).then(res => {
               if (res.code === '0000') {
                 this.disabled = false
