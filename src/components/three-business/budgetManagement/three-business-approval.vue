@@ -269,6 +269,7 @@ export default {
       this.getList()
     },
     details (dataObj) {
+      console.log(dataObj)
       getLocalStorage('id', dataObj._id)
       this.$router.push({ path: '/home/threeBusiness/erp_default' })
     },

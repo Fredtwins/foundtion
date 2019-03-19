@@ -203,8 +203,8 @@ export default {
     this.postObj.searchValue = pObj
     this._getPlanList()
     if (getLocalStorage('status') === 'details') {
-      this.isshow = false
       this.formDisabled = true
+      this.isshow = false
     }
     if (getSessionStorage('name') === 'erp') {
       this.name = 'erp'
