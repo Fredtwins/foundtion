@@ -271,6 +271,7 @@ export default {
     details (dataObj) {
       console.log(dataObj)
       getLocalStorage('id', dataObj._id)
+      getLocalStorage('status', 'details')
       this.$router.push({ path: '/home/threeBusiness/erp_default' })
     },
     approval (dataObj) {
