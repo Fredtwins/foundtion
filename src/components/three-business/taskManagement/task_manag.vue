@@ -671,6 +671,7 @@ export default {
   },
   destroyed () {
     if (getLocalStorage('formPath')) {
+      // console.log(getLocalStorage('formPath'))
       removeLocalStorage('formPath')
     }
   },
@@ -1052,9 +1053,31 @@ export default {
     },
     // 分页
     pageChange (index) {
-      this.postObj.page = index
-      this.getList()
+      this.postObjs.page = index
+      console.log(this.postObjs)
+      this.getListtemp(this.postObjs)
       // this.tableTbody = divisionArr(this.dataList)[index - 1]
+    },
+    getListtemp (searchtemp) {
+      this.loading = true
+      this.dataList = []
+      let search = {}
+      if (getLocalStorage('cebian') === '3-1') {
+        search = searchtemp
+      } else {
+        search = this.postObj
+      }
+      getTaskCryList(search).then(res => {
+        this.loading = false
+        if (res) {
+          if (res.code === '0000') {
+            this.tableTbody = res.result.result
+            this.total = res.result.totalSize
+          } else {
+            errorNotice('服务器未连接')
+          }
+        }
+      })
     },
     // 点击详情按钮
     details (dataObj) {

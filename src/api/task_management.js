@@ -63,6 +63,18 @@ export function getTaskCryList (obj) {
   }
   return ajaxPost(url, data, options())
 }
+export function getTaskCryListtemp (page = 1, search = {}) {
+  let url = 'sf_task/listForDept'
+  let data = {
+    page: page,
+    pageSize: 10,
+    searchValue: {
+      ...search
+    },
+    order: {_id: -1}
+  }
+  return ajaxPost(url, data, options())
+}
 // 增加
 export function addTaskCry (obj) {
   let url = 'sf_task/new'
