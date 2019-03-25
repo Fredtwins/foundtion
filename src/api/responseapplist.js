@@ -1,8 +1,8 @@
-import { ajaxPost } from 'api/axios'
+import { ajaxPost2 } from 'api/axios'
 
 // 列表
 export function Getresponseapplist (page = 1, search = {}) {
-  let url = ''
+  let url = 'response_application/list'
 
   let data = {
     page: page,
@@ -13,27 +13,38 @@ export function Getresponseapplist (page = 1, search = {}) {
     order: {_id: -1}
   }
 
-  return ajaxPost(url, data, options())
+  return ajaxPost2(url, data, options())
 }
 
 // 修改
 export function delresponseapplist (obj) {
-  let url = ''
+  let url = 'response_application/edit'
 
   let data = {
     ...obj
   }
 
-  return ajaxPost(url, data, options())
+  return ajaxPost2(url, data, options())
 }
 
 // 提交
 export function tijiaoresponseapplist (obj) {
-  let url = ''
+  let url = 'response_application/submit'
 
   let data = {
     ...obj
   }
 
-  return ajaxPost(url, data, options())
+  return ajaxPost2(url, data, options())
+}
+
+// 删除
+export function getdeleteapplist (ids) {
+  let url = 'response_application/delete'
+
+  let data = {
+    _ids: ids
+  }
+
+  return ajaxPost2(url, data, options())
 }

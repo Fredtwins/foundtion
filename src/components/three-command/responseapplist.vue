@@ -10,61 +10,37 @@
     </div>
     <!--搜索  -->
     <Form ref="formInline" :model="formInline" inline :label-width="60">
-      <Form-item label="部门简称" prop="department_name">
-        <Input v-model="formInline.department_name" placeholder="请输入部门名称"></Input>
+      <Form-item label="申请人">
+        <Input v-model="formInline.username" placeholder="请输入"></Input>
       </Form-item>
-      <Form-item label="部门编号" prop="department_code">
-        <Input v-model="formInline.department_code" placeholder="请输入部门编号"></Input>
+      <Form-item label="审批人">
+        <Input v-model="formInline.approveby" placeholder="请输入"></Input>
       </Form-item>
       <div class="searchBtn">
         <Button type="ghost" shape="circle" icon="ios-search" @click="submitSearch"></Button>
       </div>
-      <div class="add pull-right" @click="add">
+      <!-- <div class="add pull-right" @click="add">
         <Button type="primary">
           <span class="icon-xinzeng"></span>新增
         </Button>
-      </div>
+      </div> -->
     </Form>
     <template slot="content">
       <!--新增，修改  -->
       <Modal v-model="modal1" class="modala modal">
         <div slot="header">{{updateTitle}}</div>
         <Form :model="formItem" :label-width="80">
-          <Form-item label="部门全称" prop="department_fullname">
-            <!-- <Input v-model="formItem.department_name" placeholder="请输入部门名称"></Input> -->
-            <Select
-              :label="formItem.department_fullname"
-              not-found-text="无匹配部门，请重新输入"
-              v-model="formItem.department_fullname"
-              filterable
-              remote
-              :remote-method="autoSearch"
-              :loading="selectLoading"
-              style="width:300px"
-              @on-change="selected"
-            >
-              <Option
-                v-for="(option, index) in autoCompleteData"
-                :value="option.value"
-                :key="index"
-              >{{option.label}}</Option>
-            </Select>
-          </Form-item>
-          <Form-item label="部门简称" prop="department_name">
-            <Input v-model="formItem.department_name" placeholder="请输入部门名称"></Input>
-          </Form-item>
-          <Form-item label="部门编号" prop="department_code">
-            <Input v-model="formItem.department_code" placeholder="请输入部门编号"></Input>
-          </Form-item>
-          <Form-item label="部门级别" prop="department_level">
-            <Input v-model="formItem.department_level" placeholder="请输入部门级别"></Input>
-          </Form-item>
-          <Form-item label="系统名称" prop="system_name">
-            <Input v-model="formItem.system_name" placeholder="请输入系统名称"></Input>
-          </Form-item>
-          <Form-item label="访问地址" prop="system_access">
-            <Input v-model="formItem.system_access" placeholder="请输入系统访问地址"></Input>
-          </Form-item>
+          <div class="table">
+            <Table
+              :loading="loading"
+              border
+              stripe
+              size="small"
+              highlight-row
+              :columns="curthead"
+              :data="curTbody"
+            ></Table>
+          </div>
         </Form>
         <div slot="footer">
           <Button v-if="btnSave" type="primary" @click="_defaddList">保存</Button>
@@ -105,8 +81,8 @@
   </div>
 </template>
 <script>
-	import { defUserList, defaddList, defeditList, defdelList } from 'api/definition'
-	import { depmanageThead } from 'common/js/table'
+	import { Getresponseapplist, delresponseapplist } from 'api/responseapplist'
+	import { responseapplistthead, curapplistThead } from 'common/js/table'
 	import { cloneObj, likeStrSearch } from 'common/js/util'
 	import { loadingMixin, interactModelMixin } from 'common/js/mixins'
 	import { getDepList } from 'api/bumenlist'
@@ -117,10 +93,10 @@
 	    return {
 	      loading: false,
 	      formInline: {
-	        department_name: '',
-	        department_code: ''
+	        username: '',
+	        approveby: ''
 	      },
-	      tableThead: depmanageThead(this),
+	      tableThead: responseapplistthead(this),
 	      tableTbody: [],
 	      current: 1,
 	      total: 0,
@@ -133,7 +109,9 @@
 	      updateTitle: '',
 	      depList: {},
 	      autoCompleteData: [],
-	      selectLoading: false
+        selectLoading: false,
+        curthead: curapplistThead(this),
+        curTbody: []
 	    }
 	  },
 	  methods: {
@@ -159,26 +137,27 @@
 	      }
 	    },
 	    // 获取部门
-	    _getDepList () {
-	      getDepList().then(res => {
-	        this.depList = res.result.result.map(item => {
-	          return {
-	            value: item.fullname,
-	            label: item.fullname,
-	            department_name: item.name,
-	            department_fullname: item.fullname,
-	            department_code: item.code,
-	            department_level: item.level,
-	            name: item.name,
-	            code: item.code
-	          }
-	        })
-	      })
-	    },
+	    // _getDepList () {
+	    //   getDepList().then(res => {
+	    //     this.depList = res.result.result.map(item => {
+	    //       return {
+	    //         value: item.fullname,
+	    //         label: item.fullname,
+	    //         department_name: item.name,
+	    //         department_fullname: item.fullname,
+	    //         department_code: item.code,
+	    //         department_level: item.level,
+	    //         name: item.name,
+	    //         code: item.code
+	    //       }
+	    //     })
+	    //   })
+	    // },
 	    // 列表
-	    _defUserList (page, search) {
+	    _Getresponseapplist (page, search) {
 	      this.loading = true
-	      defUserList(page, search).then(res => {
+	      Getresponseapplist(page, search).then(res => {
+          console.log(res)
 	        if (res.code === ERR_OK) {
 	          this.loading = false
 	          this.tableTbody = res.result.result
@@ -189,7 +168,7 @@
 	    },
 	    // 页码
 	    changePage: function (page) {
-	      this._defUserList(page)
+	      this.Getresponseapplist(page)
 	    },
 	    // 新增
 	    add () {
@@ -223,6 +202,7 @@
 	    },
 	    // 编辑
 	    edit (dataObj) {
+        console.log(dataObj)
 	      this.updateTitle = '编辑部门系统'
 	      this.btnSave = false
 	      this.btnChange = true
@@ -231,7 +211,7 @@
 	    },
 	    // 修改成功
 	    _defeditList () {
-	      defeditList(this.formItem).then(res => {
+	      delresponseapplist(this.formItem).then(res => {
 	        if (res.code === ERR_OK) {
 	          this.$Notice.success({
 	            title: '修改成功'
@@ -256,23 +236,27 @@
 	        this.submitSearch()
 	        this.modal2 = false
 	      })
-	    },
+      },
+      // 提交
+      getrespon (row) {
+
+      },
 	    // 搜索
 	    submitSearch (page) {
 	      let search = {}
-	      if (this.formInline.department_name) {
-	        search.department_name = likeStrSearch(this.formInline.department_name)
+	      if (this.formInline.username) {
+	        search.username = likeStrSearch(this.formInline.username)
 	      }
-	      if (this.formInline.department_code) {
-	        search.department_code = likeStrSearch(this.formInline.department_code)
+	      if (this.formInline.approveby) {
+	        search.approveby = likeStrSearch(this.formInline.approveby)
 	      }
-	      this._defUserList(page, search)
+	      this._Getresponseapplist(page, search)
 	    }
 	  },
 	  mounted () {
-	    this._defUserList()
+	    this._Getresponseapplist()
 	    this.rowIng = {}
-	    this._getDepList()
+	    // this._getDepList()
 	  }
 	}
 </script>

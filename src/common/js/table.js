@@ -8393,8 +8393,105 @@ export function responseapplistthead (that) {
   return [
     {
       title: '名称',
-      key: '',
+      key: 'department_name',
       align: 'center'
+    }, {
+      title: '申请人',
+      key: 'username',
+      align: 'center'
+    }, {
+      title: '状态',
+      key: 'status',
+      align: 'center'
+    }, {
+      title: '申请时间',
+      key: 'createdt',
+      align: 'center'
+    }, {
+      title: '审批人',
+      key: 'approveby',
+      align: 'center'
+    }, {
+      title: '批准时间',
+      key: 'approvedt',
+      align: 'center'
+    }, {
+      title: '操作',
+      align: 'center',
+      render: (h, params) => {
+        return h('div', [
+          h('Button', {
+            props: {
+              type: 'primary',
+              size: 'small'
+            },
+            on: {
+              click: () => {
+                let data = cloneObj(params.row)
+                delete data._index
+                delete data._rowKey
+                that.edit(params.row)
+              }
+            }
+          }, '编辑'),
+          h('Button', {
+            props: {
+              type: 'success',
+              size: 'small'
+            },
+            style: {
+              marginLeft: '5px'
+            },
+            on: {
+              click: () => {
+                let data = cloneObj(params.row)
+                delete data._index
+                delete data._rowKey
+                that.getrespon(data)
+              }
+            }
+          }, '提交'),
+          h('Button', {
+            props: {
+              type: 'error',
+              size: 'small'
+            },
+            style: {
+              marginLeft: '5px'
+            },
+            on: {
+              click: () => {
+                let data = cloneObj(params.row)
+                delete data._index
+                delete data._rowKey
+                that.del(data)
+              }
+            }
+          }, '删除')
+        ])
+      }
     }
   ]
+}
+
+// 应急响应通讯录管理
+export function curapplistThead (that) {
+  return [{
+    title: '序号',
+    type: 'index',
+    align: 'center',
+    width: 60
+  }, {
+    title: '姓名',
+    key: 'name',
+    align: 'center'
+  }, {
+    title: '手机号码',
+    key: 'telephoe',
+    align: 'center'
+  }, {
+    title: '所属部门',
+    key: 'department_name',
+    align: 'center'
+  }]
 }

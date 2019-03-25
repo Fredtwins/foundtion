@@ -596,7 +596,7 @@ export default {
         'pageSize': 10,
         'order': { status: -1, _id: -1 },
         'searchValue': {
-          department_code: likeStrSearch(getUserIng().department_code),
+          department_code: getLocalStorage('info').department_code,
           department_level: getUserIng().department_level,
           plan_no: getLocalStorage('plannoadd')
         }
@@ -606,7 +606,7 @@ export default {
         'pageSize': 10,
         'order': { status: -1, _id: -1 },
         'searchValue': {
-          department_code: likeStrSearch(getUserIng().department_code),
+          department_code: getLocalStorage('info').department_code,
           department_level: getUserIng().department_level
         }
       },
@@ -846,13 +846,39 @@ export default {
     //   this.taskFormDisabled = false
     // },
     // 获取任务管理列表
-    getList () {
+    getList (searchval) {
       this.dataList = []
       this.loading = true
       // let department_name = getLocalStorage('info').department_name
       // let department_code = getLocalStorage('info').department_code
       // let department_level = getLocalStorage('info').department_level
-      getTaskCryList(this.postObjs).then(res => {
+      let search = {}
+      if (getLocalStorage('cebian') === '3-1') {
+          let postOj= {
+          'page': 1,
+          'pageSize': 10,
+          'order': { status: -1, _id: -1 },
+          'searchValue': {
+            department_code: getLocalStorage('info').department_code,
+            department_level: getUserIng().department_level,
+            ...searchval
+          }
+        }
+        search = postOj
+      } else {
+        let postOs= {
+        'page': 1,
+        'pageSize': 10,
+        'order': { status: -1, _id: -1 },
+        'searchValue': {
+          department_code: getLocalStorage('info').department_code,
+          department_level: getUserIng().department_level,
+          ...searchval
+        }
+      },
+        search = postOs
+      }
+      getTaskCryList(search).then(res => {
         this.loading = false
         if (res) {
           if (res.code === '0000') {
@@ -983,17 +1009,21 @@ export default {
       }
       this.postObj.searchValue = cloneObj(this.searchVal)
       if (this.postObj.searchValue.department_fullname) {
+        this.postObj.searchValue.department_code = getLocalStorage('info').department_code
         delete this.postObj.searchValue.department_level
+        delete this.postObj.searchValue.plan_no
+        // delete this.postObj.searchValue.department_code
       } else {
         this.postObj.searchValue = {
           ...this.postObj.searchValue,
-          department_code: likeStrSearch(getUserIng().department_code),
+          department_code: getLocalStorage('info').department_code,
           department_level: getUserIng().department_level,
           plan_no: getLocalStorage('plannoadd')
         }
       }
-      delete this.postObj.searchValue.department_fullname
-      this.getList()
+      // delete this.postObj.searchValue.department_fullname
+      // console.log(this.postObj.searchValue)
+      this.getList(this.postObj.searchValue)
     },
     // 点击保存
     save () {
