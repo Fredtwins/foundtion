@@ -621,6 +621,9 @@ const normalhome = () => import('components/three-command/normal/normal-home')
 // 应急响应列表
 const responseapplist = () => import('components/three-command/responseapplist')
 
+// 应急响应审批
+const responseappapproval = () => import('components/three-command/responseappapproval')
+
 const router = new Router({
   routes: [{
     path: '*',
@@ -1313,12 +1316,16 @@ const router = new Router({
       {
         path: '/home/threeCommand',
         component: ThreeCommand,
+        // redirect: '/home/threeCommand/responseapply',
         children: [{
           path: '/home/threeCommand/responseapply',
           component: normalhome
         }, {
           path: '/home/threeCommand/responseapplist',
           component: responseapplist
+        }, {
+          path: '/home/threeCommand/responseappapproval',
+          component: responseappapproval
         }]
       }
     ]

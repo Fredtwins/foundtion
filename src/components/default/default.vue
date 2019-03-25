@@ -402,6 +402,7 @@ export default {
     jump (obj) {
       // this.$router.push(`/notice-details/${obj._id}`)
       window.open(`${window.location.pathname}#/notice-details/${obj._id}`)
+      console.log(`${window.location.pathname}#/notice-details/${obj._id}`)
       // this.SET_STATUS(true)
       // this.SET_NOTICEID(obj)
       // let activeObj = getLocalStorage('active')

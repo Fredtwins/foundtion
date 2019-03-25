@@ -96,7 +96,7 @@
               </td>
             </tr>
             <tr v-if="name==='erp'">
-              <td class="ed-label">总则</td>
+              <td class="ed-label">基本情况</td>
               <td class="ed-content" colspan="5">
                 <FormItem style="margin:0;padding-top:5px" v-if="name==='erp'">
                   <Input
