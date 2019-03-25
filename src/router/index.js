@@ -615,6 +615,12 @@ const template = () => import('components/system-management/template')
 // 报表日志
 const rptlog = () => import('components/tab-summary/rptlog/rptlog')
 
+// 应急响应申请
+const normalhome = () => import('components/three-command/normal/normal-home')
+
+// 应急响应列表
+const responseapplist = () => import('components/three-command/responseapplist')
+
 const router = new Router({
   routes: [{
     path: '*',
@@ -1306,7 +1312,14 @@ const router = new Router({
       // 指挥一张图
       {
         path: '/home/threeCommand',
-        component: ThreeCommand
+        component: ThreeCommand,
+        children: [{
+          path: '/home/threeCommand/responseapply',
+          component: normalhome
+        }, {
+          path: '/home/threeCommand/responseapplist',
+          component: responseapplist
+        }]
       }
     ]
   }
@@ -1345,7 +1358,7 @@ const isRole = (path) => {
     return false
   }
 }
-
+// console.log(isRole)
 router.beforeEach((from, to, next) => {
   // next()
   if (from.path === '/') {

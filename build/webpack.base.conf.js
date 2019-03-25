@@ -34,15 +34,15 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        // 编译vue或者js文件时,使用eslint-loader
-        test: /\.(vue|js)$/,
-        loader: 'eslint-loader',
-        // 除了node_modules下的不编译
-        exclude: /node_modules/,
-        // 顺序: 在其他loader编译之前先使用eslint-loader编译, pre是之前, next是之后
-        enforce: 'pre'
-      },
+      // {
+      //   // 编译vue或者js文件时,使用eslint-loader
+      //   test: /\.(vue|js)$/,
+      //   loader: 'eslint-loader',
+      //   // 除了node_modules下的不编译
+      //   exclude: /node_modules/,
+      //   // 顺序: 在其他loader编译之前先使用eslint-loader编译, pre是之前, next是之后
+      //   enforce: 'pre'
+      // },
       {
         test: /\.vue$/,
         loader: 'vue-loader',

@@ -6,7 +6,7 @@
     <div class="normal-warning">
       <div class="normal-warning-title">
         <span class="iconfont icon-jinggao icon"></span>
-        <span class="title">当前预警&nbsp;:</span>
+        <!-- <span class="title">当前预警&nbsp;:</span> -->
       </div>
 
       <div class="normal-warning-content">
@@ -205,12 +205,13 @@ export default {
 			bottom: 0;
 		}
 		.normal-warning {
-			width: 100%;
+			width: 87%;
 			height: 30px;
 			background-color: #fff5e6;
 			position: fixed;
 			top: 40px;
-			left: 0;
+			// left: 0;
+      right: 0;
 			z-index: 999;
 			padding: 0 10px;
 			color: $color-danger;
@@ -258,7 +259,7 @@ export default {
 				width: 360px;
 				height: 300px;
 				margin: auto;
-				margin-top: 50px;
+				margin-top: 226px;
 				.normal-othenIcon {
 					width: 180px;
 					height: 180px;

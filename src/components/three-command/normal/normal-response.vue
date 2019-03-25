@@ -28,13 +28,15 @@
 				</Col>
 			</Row>
 		</comfim-model>
+    <normal-pagemodel v-if="showmodel"/>
 	</div>
 
 </template>
 
 <script>
+import NormalPagemodel from './normal-pagemodel'
 import { mapGetters, mapMutations } from 'vuex'
-import { startEmergency } from 'api/threeCommand'
+import { getstategency } from 'api/threeCommand'
 // import { ACTION_KEYS } from 'api/socket';
 // import { startEmergency } from 'api/socketAPI';
 import { normalMaskModelMixin, comfimModelMixin } from 'common/js/mixins'
@@ -49,6 +51,9 @@ export default {
       'responseIng'
     ])
   },
+  components: {
+    NormalPagemodel
+  },
   created () {
     // this.$bus.on(ACTION_KEYS['start_emergency'], this._start_emergency);
   },
@@ -57,7 +62,8 @@ export default {
   },
   data () {
     return {
-      showLoading: false
+      showLoading: false,
+      showmodel: false
     }
   },
   methods: {
@@ -85,16 +91,18 @@ export default {
       // })
     },
     goWarn () {
-      if (this.showLoading) {
-        errorMessage('已经在努力启动应急响应了')
-        return
-      }
-
-      if (this.responseIng.length === 0) {
-        errorMessage('请选择应急响应类型')
-        return
-      }
+      // this.showmodel = true
+      console.log(111)
       this.$refs['comfim-model'].showModel()
+      // if (this.showLoading) {
+      //   errorMessage('已经在努力启动应急响应了')
+      //   return
+      // }
+
+      // if (this.responseIng.length === 0) {
+      //   errorMessage('请选择应急响应类型')
+      //   return
+      // }
     },
     isChecked (items, item) {
       if (!item.isChecked) {
@@ -119,9 +127,12 @@ export default {
     // this.showLoading = false;
     // },
     _startEmergency (obj = {}) {
-      startEmergency(obj).then(res => {
+      getstategency(obj).then(res => {
         if (res.code === ERR_OK) {
-          successMessage('启动应急响应成功')
+          this.$router.push('/home/threeCommand/responseapplist')
+        //   successMessage('启动应急响应成功')
+        // } else {
+        //   errorMessage(res.message)
         } else {
           errorMessage(res.message)
         }

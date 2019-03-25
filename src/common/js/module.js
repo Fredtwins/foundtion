@@ -973,6 +973,29 @@ export const moveManagementBotMenu = [
   }
 ]
 
+// 应急相应
+export const normalManagementBotMenu = [
+  {
+    id: 'mdl.threeCommand.responseapply',
+    text: '应急响应申请',
+    name: '1',
+    link: 'responseapply',
+    icon: 'iconfont icon-yingjiyuan'
+  }, {
+    id: 'mdl.threeCommand.responseapplist',
+    text: '应急响应申请列表',
+    name: '2',
+    link: 'responseapplist',
+    icon: 'iconfont icon-yingjiyuan'
+  }, {
+    id: 'mdl.threeCommand.responseappapproval',
+    text: '应急响应审批',
+    name: '3',
+    link: 'responseappapproval',
+    icon: 'iconfont icon-yingjiyuan'
+  }
+]
+
 // routes依赖 id
 export const routesRelyonId = [
   {
@@ -984,6 +1007,15 @@ export const routesRelyonId = [
   }, {
     id: 'mdl.threeCommand',
     paths: ['/home/threeCommand']
+  }, {
+    id: 'mdl.threeCommand.responseapply',
+    paths: ['/home/threeCommand/responseapply']
+  }, {
+    id: 'mdl.threeCommand.responseapplist',
+    paths: ['/home/threeCommand/responseapplist']
+  }, {
+    id: 'mdl.threeCommand.responseappapproval',
+    paths: ['/home/threeCommand/responseappapproval']
   }, {
     id: 'mdl.sanfanapplication',
     paths: ['/home/threeBusiness']

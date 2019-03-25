@@ -14,7 +14,7 @@ export function getWarnInfo (obj = {}) {
   return ajaxPost1(url, data, options())
 }
 
-// 启动应急响应
+// 应急响应
 export function startEmergency (obj = {}) {
   let url = `${commonWebHttpUrl}sf-websocket/emergency/start_emergency`
 
@@ -22,6 +22,16 @@ export function startEmergency (obj = {}) {
     'response_list': obj.response_list
   }
 
+  return ajaxPost1(url, data, options())
+}
+
+// 启动应急响应
+export function getstategency (obj = {}) {
+  let url = `${commonWebHttpUrl}sanfangstruts/response_application/new`
+
+  let data = {
+    'response_list': obj.response_list
+  }
   return ajaxPost1(url, data, options())
 }
 

@@ -8387,3 +8387,14 @@ export function rainthear (that) {
     }
   ]
 }
+
+// 应急响应列表
+export function responseapplistthead (that) {
+  return [
+    {
+      title: '名称',
+      key: '',
+      align: 'center'
+    }
+  ]
+}
