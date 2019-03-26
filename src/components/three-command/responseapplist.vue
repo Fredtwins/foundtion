@@ -26,25 +26,32 @@
       </div> -->
     </Form>
     <template slot="content">
-      <!--新增，修改  -->
+      <!--修改  -->
       <Modal v-model="modal1" class="modala modal">
         <div slot="header">{{updateTitle}}</div>
         <Form :model="formItem" :label-width="80">
+          <Form-item label="所属部门">
+            <Input v-model="department_name" placeholder="请输入"></Input>
+          </Form-item>
+          <div class="searchBtn">
+            <Button type="ghost" shape="circle" icon="ios-search" @click="submitSearchpage"></Button>
+          </div>
           <div class="table">
             <Table
-              :loading="loading"
+              :loading="loadingaddress"
               border
               stripe
               size="small"
               highlight-row
               :columns="curthead"
               :data="curTbody"
+              @on-select="selected"
             ></Table>
           </div>
         </Form>
         <div slot="footer">
           <Button v-if="btnSave" type="primary" @click="_defaddList">保存</Button>
-          <Button v-if="btnChange" type="primary" @click="_defeditList">修改</Button>
+          <Button v-if="btnChange" type="primary" @click="_defeditList">确认</Button>
         </div>
       </Modal>
       <!--确认删除  -->
@@ -58,6 +65,18 @@
         </div>
         <div slot="footer">
           <Button type="error" size="large" long :loading="modal_loading" @click="_defdelList">确认</Button>
+        </div>
+      </Modal>
+      <Modal v-model="modal3" width="360">
+        <p slot="header" style="color:green;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>提交</span>
+        </p>
+        <div style="text-align:center">
+          <p>确认提交？</p>
+        </div>
+        <div slot="footer">
+          <Button type="error" size="large" long @click="_defdelListpage">确认</Button>
         </div>
       </Modal>
     </template>
@@ -81,37 +100,51 @@
   </div>
 </template>
 <script>
-	import { Getresponseapplist, delresponseapplist } from 'api/responseapplist'
+	import { Getresponseapplist, delresponseapplist, tijiaoresponseapplist, getdeleteapplist } from 'api/responseapplist'
 	import { responseapplistthead, curapplistThead } from 'common/js/table'
 	import { cloneObj, likeStrSearch } from 'common/js/util'
 	import { loadingMixin, interactModelMixin } from 'common/js/mixins'
-	import { getDepList } from 'api/bumenlist'
+  import { getDepList } from 'api/bumenlist'
+  import { getaddress } from 'api/daily-office'
 
 	export default {
 	  mixins: [loadingMixin, interactModelMixin],
 	  data () {
 	    return {
-	      loading: false,
+        loading: false,
+        loadingaddress: false,
 	      formInline: {
 	        username: '',
 	        approveby: ''
-	      },
+        },
 	      tableThead: responseapplistthead(this),
 	      tableTbody: [],
 	      current: 1,
-	      total: 0,
-	      formItem: {},
+        total: 0,
+        totalpage: 0,
+        currentpage: 1,
+        formItem: {},
+        department_name: '',
 	      modal2: false,
 	      modal_loading: false,
 	      modal1: false,
 	      btnChange: false,
 	      btnSave: false,
 	      updateTitle: '',
-	      depList: {},
+        depList: {},
+        modal3: false,
 	      autoCompleteData: [],
         selectLoading: false,
         curthead: curapplistThead(this),
-        curTbody: []
+        curTbody: [],
+        postObj: {
+          page: 1,
+          pageSize: 10,
+          searchValue: {},
+          order: {
+            _id: -1
+          }
+        }
 	    }
 	  },
 	  methods: {
@@ -169,7 +202,31 @@
 	    // 页码
 	    changePage: function (page) {
 	      this.Getresponseapplist(page)
-	    },
+      },
+      // 搜索
+      submitSearchpage () {
+        let search = {}
+        if (this.department_name) {
+          search.department_name = likeStrSearch(this.department_name)
+        }
+        this._addressBookApi(search)
+      },
+      // 获取通讯录人员表
+      _addressBookApi (search) {
+        this.loadingaddress = true
+        getaddress(search).then(res => {
+          if (res.code === ERR_OK) {
+            this.loadingaddress = false
+            this.curTbody = res.result.result
+          }
+        })
+      },
+      // 选中框
+      selected (selection, row) {
+        // console.log(selection)
+        this.formItem.contact_list = selection
+        // console.log(this.formItem)
+      },
 	    // 新增
 	    add () {
 	      this.formItem = {
@@ -179,7 +236,7 @@
 	        system_name: '',
 	        system_access: ''
 	      }
-      this.updateTitle = '新增部门系统'
+      // this.updateTitle = '新增部门系统'
       this.btnChange = false
 	      this.btnSave = true
 	      this.modal1 = true
@@ -202,19 +259,21 @@
 	    },
 	    // 编辑
 	    edit (dataObj) {
-        console.log(dataObj)
-	      this.updateTitle = '编辑部门系统'
+        // console.log(dataObj)
+	      this.updateTitle = '通讯录人员表'
 	      this.btnSave = false
 	      this.btnChange = true
 	      this.modal1 = true
-	      this.formItem = dataObj
+        this.formItem = dataObj
+        this._addressBookApi()
 	    },
 	    // 修改成功
 	    _defeditList () {
 	      delresponseapplist(this.formItem).then(res => {
+          // console.log(this.formItem)
 	        if (res.code === ERR_OK) {
 	          this.$Notice.success({
-	            title: '修改成功'
+	            title: '成功'
 	          })
 	          this.submitSearch(this.current)
 	          this.modal1 = false
@@ -227,19 +286,40 @@
 	      this.modal2 = true
 	    },
 	    _defdelList () {
-	      defdelList(this.rowIng._id).then(res => {
+	      getdeleteapplist(this.rowIng._id).then(res => {
 	        if (res.code === ERR_OK) {
 	          this.$Notice.success({
 	            title: '删除成功'
 	          })
-	        }
+	        } else if (res.code === '0023') {
+            this.$Notice.error({
+	            title: res.message
+	          })
+          }
 	        this.submitSearch()
 	        this.modal2 = false
 	      })
       },
       // 提交
       getrespon (row) {
-
+        this.rowIngpage = cloneObj(row)
+        this.modal3 = true
+      },
+      _defdelListpage() {
+        tijiaoresponseapplist(this.rowIngpage._id).then(res => {
+          console.log(this.rowIngpage._id)
+          if (res.code === ERR_OK) {
+            this.$Notice.success({
+	            title: '提交成功'
+	          })
+          } else if (res.code === '0024') {
+            this.$Notice.error({
+	            title: res.message
+	          })
+          }
+          this.submitSearch()
+          this.modal3 = false
+        })
       },
 	    // 搜索
 	    submitSearch (page) {
@@ -255,7 +335,8 @@
 	  },
 	  mounted () {
 	    this._Getresponseapplist()
-	    this.rowIng = {}
+      this.rowIng = {}
+      this.rowIngpage = {}
 	    // this._getDepList()
 	  }
 	}
@@ -324,5 +405,14 @@
         }
       }
     }
+  }
+  .modala .ivu-modal .ivu-modal-content .ivu-modal-body li {
+    padding-left: none !important;
+  }
+  .ivu-page-item {
+    padding-left: 0px !important;
+  }
+  .ivu-page-item .ivu-page-item-active {
+    padding-left: 0px !important;
   }
 </style>

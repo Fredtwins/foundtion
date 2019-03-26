@@ -123,6 +123,28 @@ export function ajaxPost2 (url = '', data = {}, option = {}) {
     return Promise.resolve(res.data)
   })
 }
+export function ajaxPost3 (url = '', data = {}, option = {}) {
+  window.clearTimeout(timer)
+  timer = setTimeout(() => {
+    alert(timeOut)
+    window.location.href = location.pathname
+  }, 3300000)
+  iView.LoadingBar.start()
+  data.sanfang_integration_service_loginfo = sanfang_integration_service_loginfo
+  url = `${commonWebHttpUrl}${url}?system_id=1000010`
+  return axios.post(url, data, option).then(res => {
+    // if (res.data.message !== '用户名或密码错误' && res.data.code === ERR_TIMEOUT || res.data.code === ERR_TOKEN_NOTFOUND || res.data.code === '0005') {
+    //   removeUserIng()
+    //   window.location.href = location.pathname
+    //   return
+    // }
+    iView.LoadingBar.finish()
+    return Promise.resolve(res.data)
+  }).catch(res => {
+    iView.LoadingBar.error()
+    return Promise.resolve(res.data)
+  })
+}
 
 // 页面接口通用接口 post
 export function ajaxPost1 (url = '', data = {}, option = {}) {

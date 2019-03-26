@@ -9,6 +9,19 @@ export function addressBookApi (type, obj) {
   return ajaxPost(url, data, options())
 }
 
+// 通讯录人员管理
+export function getaddress (search = {}) {
+  let url = 'oa/dp_contact_list/list/list'
+
+  let data = {
+    searchValue: {
+      ...search
+    }
+  }
+
+  return ajaxPost(url, data, options())
+}
+
 // 通知公告
 export function noticeApi (type, obj) {
   let url = `sf/sf_notice/${type}`

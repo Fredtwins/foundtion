@@ -8477,6 +8477,11 @@ export function responseapplistthead (that) {
 // 应急响应通讯录管理
 export function curapplistThead (that) {
   return [{
+    title: '选项(一个)',
+    align: 'center',
+    width: 80,
+    type: 'selection'
+  }, {
     title: '序号',
     type: 'index',
     align: 'center',
@@ -8493,5 +8498,92 @@ export function curapplistThead (that) {
     title: '所属部门',
     key: 'department_name',
     align: 'center'
+  }]
+}
+
+// 应急响应审批
+export function resapprovalThead (that) {
+  return [{
+    title: '序号',
+    type: 'index',
+    align: 'center',
+    width: 60
+  }, {
+    title: '执行部门',
+    key: 'department_name',
+    align: 'center',
+    ellipsis: true
+  }, {
+    title: '提交时间',
+    key: 'createdt',
+    align: 'center',
+    ellipsis: true
+  }, {
+    title: '状态',
+    key: 'status',
+    align: 'center'
+  }, {
+    title: '操作',
+    key: 'edit',
+    align: 'center',
+    width: 300,
+    render: (h, params) => {
+      let value = ''
+      if (params.row.status === '生效') {
+        value = '失效'
+      } else {
+        value = '生效'
+      }
+      return h('div', [
+        // h('Button', {
+        //   props: {
+        //     type: 'success',
+        //     size: 'small'
+        //   },
+        //   style: {
+        //     marginRight: '5px'
+        //   },
+        //   on: {
+        //     click: () => {
+        //       let data = cloneObj(params.row)
+        //       delete data['_index']
+        //       delete data['_rowKey']
+        //       that.details(data)
+        //     }
+        //   }
+        // }, '审批通过'),
+        h('Button', {
+          props: {
+            type: 'primary',
+            size: 'small'
+          },
+          style: {
+            marginRight: '5px'
+          },
+          on: {
+            click: () => {
+              let data = cloneObj(params.row)
+              delete data['_index']
+              delete data['_rowKey']
+              that.approval(data)
+            }
+          }
+        }, value),
+        h('Button', {
+          props: {
+            type: 'error',
+            size: 'small'
+          },
+          on: {
+            click: () => {
+              let data = cloneObj(params.row)
+              delete data['_index']
+              delete data['_rowKey']
+              that.back(data)
+            }
+          }
+        }, '回退草稿')
+      ])
+    }
   }]
 }

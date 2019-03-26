@@ -30,7 +30,7 @@
               :key="index"
             >{{option.label}}</Option>
           </Select>
-          <span class="search_title">预案类型</span>
+          <!-- <span class="search_title">预案类型</span>
           <Select
             v-model="searchVal.plan_category"
             placeholder="请选择"
@@ -42,7 +42,7 @@
               :value="item.value"
               :key="item.value"
             >{{ item.label }}</Option>
-          </Select>
+          </Select> -->
           <div class="searchBtn" @click="search">
             <Button type="ghost" shape="circle" icon="ios-search"></Button>
           </div>
@@ -127,8 +127,9 @@
 
 <script>
 import { getAprList, approve, withdraw } from 'api/plan_management'
-import { getUserIng, initTime } from 'common/js/util'
-import { approvalThead } from 'common/js/table'
+import { Getapprovallist, passidlist, Regressionlist, Invalidlist } from 'api/responseappapproval'
+import { getUserIng, initTime, cloneObj } from 'common/js/util'
+import { resapprovalThead } from 'common/js/table'
 import { depPlanQuery } from 'common/js/query'
 import { getLocalStorage, successNotice, errorNotice } from 'common/js/dom'
 import { getDepList } from 'api/bumenlist'
@@ -137,7 +138,7 @@ export default {
     return {
       tabName: '生效审批',
       loading: false,
-      tableThead: approvalThead(this),
+      tableThead: resapprovalThead(this),
       tableTbody: [],
       total: 0,
       searchVal: {
@@ -163,6 +164,7 @@ export default {
   created () {
     window.sessionStorage.setItem('tabName', '生效审批')
     this._getDepList()
+
     setTimeout(() => {
       let name = window.sessionStorage.getItem('tabName')
       if (name) {
@@ -174,7 +176,8 @@ export default {
           this.postObj.searchValue = {status: '生效'}
         }
       }
-      this.getList()
+      this._Getapprovallist()
+      // this.getList()
     }, 100)
   },
   methods: {
@@ -186,14 +189,14 @@ export default {
           this.searchVal = {}
           this.postObj.searchValue = {status: '待审批'}
           this.currentstatus = '待审批'
-          this.getList()
+          this._Getapprovallist()
           break
         case '失效审批':
           window.sessionStorage.setItem('tabName', '失效审批')
           this.searchVal = {}
           this.postObj.searchValue = {status: '生效'}
           this.currentstatus = '生效'
-          this.getList()
+          this._Getapprovallist()
           break
         default:
           break
@@ -202,7 +205,7 @@ export default {
     // 查看全部
     refresh () {
       this.postObj.searchValue = { 'status': this.currentstatus }
-      this.getList()
+      this._Getapprovallist()
     },
     selected (value) {
       if (value) {
@@ -239,6 +242,18 @@ export default {
         }
       })
     },
+    // 获取列表
+    _Getapprovallist() {
+      this.loading = true
+      Getapprovallist(this.postObj).then(res => {
+        this.loading = false
+        console.log(res)
+        if (res.code === ERR_OK) {
+          this.tableTbody = res.result.result
+          this.total = res.result.totalSize
+        }
+      })
+    },
     getList () {
       this.loading = true
       getAprList(this.postObj).then(res => {
@@ -265,40 +280,68 @@ export default {
     },
     pageChange (index) {
       this.postObj.page = index
-      this.getList()
+      this._Getapprovallist()
     },
     details (dataObj) {
-      console.log(dataObj)
-      getLocalStorage('id', dataObj._id)
-      getLocalStorage('status', 'details')
-      this.$router.push({ path: '/home/threeBusiness/erp_default' })
-    },
-    approval (dataObj) {
-      var username = getUserIng().username
-      let pObj = {}
-      if (dataObj.status === '生效') {
-        pObj = { '_id': dataObj._id, 'status': '失效', 'approveby': username, 'approvedt': initTime() }
-      } else if (dataObj.status === '待审批') {
-        pObj = { '_id': dataObj._id, 'status': '生效', 'approveby': username, 'approvedt': initTime() }
-      }
-      approve(pObj).then(res => {
-        if (res.code === '0000') {
-          this.postObj.searchValue.status = this.currentstatus
-          this.getList()
-          successNotice('审批成功')
+      this.rowIngmingxi = cloneObj(dataObj)
+      passidlist(this.rowIngmingxi._id).then(res => {
+        console.log(res)
+        if (res.code === ERR_OK) {
+
         }
       })
     },
+    approval (dataObj) {
+      // var username = getUserIng().username
+      this.rowIngmingxi = cloneObj(dataObj)
+      // let pObj = {}
+      // if (dataObj.status === '生效') {
+      //   pObj = { '_id': dataObj._id }
+      // } else if (dataObj.status === '待审批') {
+      //   pObj = { '_id': dataObj._id }
+      // }
+      console.log(dataObj.status)
+      if (dataObj.status === '生效') {
+        Invalidlist(this.rowIngmingxi._id).then(res => {
+          if (res.code === '0000') {
+            this.postObj.searchValue.status = this.currentstatus
+            this._Getapprovallist()
+            successNotice('已失效')
+          } else if (res.code === '0005') {
+            this.$Notice.error({
+              title: res.message
+            })
+          }
+        })
+      } else {
+        passidlist(this.rowIngmingxi._id).then(res => {
+          if (res.code === '0000') {
+            this.postObj.searchValue.status = this.currentstatus
+            this._Getapprovallist()
+            successNotice('审批成功')
+          } else if (res.code === '0005') {
+            this.$Notice.error({
+              title: res.message
+            })
+          }
+        })
+      }
+    },
     back (dataObj) {
-      var username = getUserIng().username
-      var pObj = { '_id': dataObj._id, 'status': '草稿', 'approveby': username, 'approvedt': initTime() }
-      withdraw(pObj).then(res => {
+      this.rowInghuitui = cloneObj(dataObj)
+      // var username = getUserIng().username
+      // var pObj = { '_id': dataObj._id }
+      Regressionlist(this.rowInghuitui._id).then(res => {
         if (res.code === '0000') {
-          this.getList()
+          this._Getapprovallist()
           successNotice('已回退为草稿')
         }
       })
     }
+  },
+  mounted () {
+    this.rowIngmingxi = {}
+    this.rowInghuitui = {}
   }
 }
 </script>

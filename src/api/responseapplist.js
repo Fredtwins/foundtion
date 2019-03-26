@@ -28,11 +28,11 @@ export function delresponseapplist (obj) {
 }
 
 // 提交
-export function tijiaoresponseapplist (obj) {
+export function tijiaoresponseapplist (ids) {
   let url = 'response_application/submit'
 
   let data = {
-    ...obj
+    _id: ids
   }
 
   return ajaxPost2(url, data, options())
@@ -43,7 +43,7 @@ export function getdeleteapplist (ids) {
   let url = 'response_application/delete'
 
   let data = {
-    _ids: ids
+    _id: ids
   }
 
   return ajaxPost2(url, data, options())
