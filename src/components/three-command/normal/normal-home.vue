@@ -205,8 +205,8 @@ export default {
 			bottom: 0;
 		}
 		.normal-warning {
-			width: 87%;
-			height: 30px;
+			width: 89%;
+			height: 50px;
 			background-color: #fff5e6;
 			position: fixed;
 			top: 40px;
@@ -259,7 +259,7 @@ export default {
 				width: 360px;
 				height: 300px;
 				margin: auto;
-				margin-top: 226px;
+				margin-top: 156px;
 				.normal-othenIcon {
 					width: 180px;
 					height: 180px;
