@@ -387,23 +387,32 @@ export default {
     },
     // 修改成功
     changeNotice () {
+      updateUserList(this.formItem).then(res => {
+        if (res.code === ERR_OK) {
+          this.$Notice.success({
+            title: '修改成功'
+          })
+          this.submitSearch(this.current)
+          this.modal1 = false
+        }
+      })
       // let index = this.rolenameLists.findIndex(item => item.system_name === this.formItem.system_name)
       // this.formItem.system_id= this.rolenameLists[index].system_id
-      var regex = /^[A-Za-z0-9]{8,20}$/;   //密码是大于或等于8位的字母和数字组合
-      if(!regex.test(this.formItem.password)){
-        this.$Message.error('密码请输入不少于8位的数字和字母组合');
-      } else {
-        this.formItem.password =  md5(this.formItem.password)
-        updateUserList(this.formItem).then(res => {
-          if (res.code === ERR_OK) {
-            this.$Notice.success({
-              title: '修改成功'
-            })
-            this.submitSearch(this.current)
-            this.modal1 = false
-          }
-        })
-      }
+      // var regex = /^[A-Za-z0-9]{8,20}$/;   //密码是大于或等于8位的字母和数字组合
+      // if(!regex.test(this.formItem.password)){
+      //   this.$Message.error('密码请输入不少于8位的数字和字母组合');
+      // } else {
+      //   this.formItem.password =  md5(this.formItem.password)
+      //   updateUserList(this.formItem).then(res => {
+      //     if (res.code === ERR_OK) {
+      //       this.$Notice.success({
+      //         title: '修改成功'
+      //       })
+      //       this.submitSearch(this.current)
+      //       this.modal1 = false
+      //     }
+      //   })
+      // }
 
     },
     // 删除
