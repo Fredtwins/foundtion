@@ -335,25 +335,38 @@ export default {
           })
           delete this.formItem['label']
           delete this.formItem['value']
-          var regex = /^[A-Za-z0-9]{8,20}$/;   //密码是大于或等于8位的字母和数字组合
-          if(!regex.test(this.formItem.password)){
-            this.$Message.error('密码请输入不少于8位的数字和字母组合');
-          } else {
-            this.formItem.password =  md5(this.formItem.password)
-            getOgnList(this.formItem).then(res => {
-              this.modal1 = false
-              if (res.code === ERR_OK) {
-                this.$Notice.success({
-                  title: '新增成功'
-                })
-                this._getUserList()
-              } else {
-                this.$Notice.warning({
-                  title: '用户名已存在'
-                })
-              }
-            })
-          }
+          getOgnList(this.formItem).then(res => {
+	          this.modal1 = false
+	          if (res.code === ERR_OK) {
+	            this.$Notice.success({
+	              title: '新增成功'
+	            })
+	            this._getUserList()
+	          } else {
+	            this.$Notice.warning({
+	              title: '用户名已存在'
+	            })
+	          }
+	        })
+//        var regex = /^[A-Za-z0-9]{8,20}$/;   //密码是大于或等于8位的字母和数字组合
+//        if(!regex.test(this.formItem.password)){
+//          this.$Message.error('密码请输入不少于8位的数字和字母组合');
+//        } else {
+//          this.formItem.password =  md5(this.formItem.password)
+//          getOgnList(this.formItem).then(res => {
+//            this.modal1 = false
+//            if (res.code === ERR_OK) {
+//              this.$Notice.success({
+//                title: '新增成功'
+//              })
+//              this._getUserList()
+//            } else {
+//              this.$Notice.warning({
+//                title: '用户名已存在'
+//              })
+//            }
+//          })
+//        }
         }
       })
     },

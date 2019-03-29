@@ -8477,9 +8477,9 @@ export function responseapplistthead (that) {
 // 应急响应通讯录管理
 export function curapplistThead (that) {
   return [{
-    title: '选项(一个)',
+    title: '',
     align: 'center',
-    width: 80,
+    width: 54,
     type: 'selection'
   }, {
     title: '序号',
