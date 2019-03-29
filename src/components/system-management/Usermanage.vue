@@ -335,6 +335,7 @@ export default {
           })
           delete this.formItem['label']
           delete this.formItem['value']
+          this.formItem.password =  md5(this.formItem.password)
           getOgnList(this.formItem).then(res => {
 	          this.modal1 = false
 	          if (res.code === ERR_OK) {
@@ -387,7 +388,9 @@ export default {
     },
     // 修改成功
     changeNotice () {
+      this.formItem.password =  md5(this.formItem.password)
       updateUserList(this.formItem).then(res => {
+        console.log(res)
         if (res.code === ERR_OK) {
           this.$Notice.success({
             title: '修改成功'
